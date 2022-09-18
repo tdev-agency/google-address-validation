@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TDevAgency\GoogleAddressValidation\Enums;
 
 use MyCLabs\Enum\Enum;
@@ -23,4 +25,5 @@ class LanguageEnum extends Enum
     private const EN = 'en';
     private const FR = 'fr';
     private const PT = 'pt';
+    private const ES = 'es';
 }

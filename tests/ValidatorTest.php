@@ -55,11 +55,11 @@ class ValidatorTest extends TestCase
     public function testValidateMultiple(): void
     {
         $searchEntity = (new SearchEntity())->
-            setHouseNumber('1')->
-            setStreetName('Leipziger')->
-            setCity('Berlin')->
-            setCountry(CountryEnum::DE())->
-        setLanguage(LanguageEnum::DE());
+//            setHouseNumber('1')->
+            setStreetName('251 FLORIDA ST')->
+            setCity('BATON ROUGE')->
+            setCountry(CountryEnum::US())->
+        setLanguage(LanguageEnum::EN());
 
         $result = $this->addressValidation->validate($searchEntity);
 

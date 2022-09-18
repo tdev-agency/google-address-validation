@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TDevAgency\GoogleAddressValidation;
 
 use GuzzleHttp\Client;
@@ -68,14 +70,26 @@ class AddressValidator
      */
     protected function getData(SearchEntity $entity): ResultsEntity
     {
+        $address = '';
+
+        if (!empty($entity->getHouseNumber())) {
+            $address .= str_replace(['  ', '+'], '+', $entity->getHouseNumber());
+            $address .= '+';
+        }
+        $address .= str_replace(['  ', '+'], '+', $entity->getStreetName());
+        $address .= ',';
+        $address .= str_replace(['  ', '+'], '+', $entity->getCity());
+        $address .= ',';
+
+        if (!empty($entity->getRegion())) {
+            $address .= str_replace(['  ', '+'], '+', $entity->getRegion());
+            $address .= ',';
+        }
+
+        $address .= $entity->getCountry();
+
         $query = [
-            'address' => sprintf(
-                '%s+%s,+%s,+%s',
-                str_replace(['  ', '+'], '+', $entity->getHouseNumber()),
-                str_replace(['  ', '+'], '+', $entity->getStreetName()),
-                str_replace(['  ', '+'], '+', $entity->getCity()),
-                $entity->getCountry()
-            ),
+            'address' => $address,
             'region' => mb_strtolower($entity->getCountry()),
             'components' => sprintf('country:%s|locality:%s', $entity->getCountry(), $entity->getCity()),
             'language' => $entity->getLanguage(),

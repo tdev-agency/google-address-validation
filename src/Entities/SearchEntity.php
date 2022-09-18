@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TDevAgency\GoogleAddressValidation\Entities;
 
 use TDevAgency\GoogleAddressValidation\Enums\CountryEnum;
@@ -19,6 +21,9 @@ class SearchEntity
 
     /* @var string */
     protected $country = '';
+
+    /* @var string */
+    protected $region = '';
 
     /* @var string */
     protected $language = 'en';
@@ -88,9 +93,6 @@ class SearchEntity
 
     public function validateInputs(): void
     {
-        if (empty($this->houseNumber)) {
-            throw new SearchInputException('$houseNumber cannot be empty');
-        }
         if (empty($this->city)) {
             throw new SearchInputException('$city cannot be empty');
         }
@@ -100,5 +102,17 @@ class SearchEntity
         if (empty($this->country)) {
             throw new SearchInputException('$country cannot be empty');
         }
+    }
+
+    public function setRegion(string $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getRegion(): string
+    {
+        return $this->region;
     }
 }

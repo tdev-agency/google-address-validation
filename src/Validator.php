@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TDevAgency\GoogleAddressValidation;
 
 use TDevAgency\GoogleAddressValidation\Entities\ResultsEntity;
@@ -27,7 +29,8 @@ class Validator
             if (
                 $this->compare($addressEntity->getStreetName(), $searchEntity->getStreetName()) &&
                 $this->compare($addressEntity->getCity(), $searchEntity->getCity()) &&
-                $this->compare($addressEntity->getStreetNumber(), $searchEntity->getHouseNumber())
+                $this->compare($addressEntity->getStreetNumber(), $searchEntity->getHouseNumber()) &&
+                $this->compare($addressEntity->getRegion(), $searchEntity->getRegion())
             ) {
                 return ValidatorEntity::make(
                     ValidationStatusEnum::SINGLE_RESULT(),
@@ -43,8 +46,11 @@ class Validator
         );
     }
 
-    private function compare($string1, $string2): bool
+    private function compare($string1, $string2 = ''): bool
     {
+        if (empty($string2)) {
+            return true;
+        }
         $string1 = rtrim($string1, '., ');
         $string2 = rtrim($string2, '., ');
         $res = abs(strcasecmp($string2, $string1));

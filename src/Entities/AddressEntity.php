@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace TDevAgency\GoogleAddressValidation\Entities;
 
 use TDevAgency\GoogleAddressValidation\Enums\CountryEnum;
@@ -18,6 +20,9 @@ class AddressEntity
 
     /* @var string */
     protected $streetName = '';
+
+    /* @var string */
+    protected $region = '';
 
     /* @var string */
     protected $city;
@@ -55,6 +60,10 @@ class AddressEntity
             }
             if (\in_array(GoogleAddressTypeEnum::COUNTRY()->getValue(), $component['types'], true)) {
                 $entity->setCountry(CountryEnum::from($component['short_name']));
+                continue;
+            }
+            if (\in_array(GoogleAddressTypeEnum::REGION()->getValue(), $component['types'], true)) {
+                $entity->setRegion((string) $component['long_name']);
                 continue;
             }
             if (\in_array(GoogleAddressTypeEnum::POST_CODE()->getValue(), $component['types'], true)) {
@@ -139,5 +148,17 @@ class AddressEntity
         $this->streetAddress = $streetAddress;
 
         return $this;
+    }
+
+    public function setRegion(string $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getRegion(): string
+    {
+        return $this->region;
     }
 }
